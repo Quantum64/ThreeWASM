@@ -1,0 +1,81 @@
+<html>
+
+<head>
+  <script type="text/javascript" src="function.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <script>
+    function update() {
+      var element = document.getElementById("result");
+      process(document.getElementById("number").value, 1000000);
+      //element.style.backgroundColor = '#304ffe';
+    }
+
+    function increaseDeapth() {
+      var element = document.getElementById("result");
+      document.getElementById("increase").style.visibility = 'hidden';
+      element.innerHTML = "Searching...";
+      var deapth = parseInt(document.getElementById("deapth").value);
+      if (deapth == NaN) {
+        deapth = 100000000;
+      }
+      window.setTimeout(() => process(document.getElementById("number").value, deapth), 100);
+    }
+
+    function process(number, deapth) {
+      var element = document.getElementById("result");
+      var digits = 0;
+      var index = number.length;
+      while (index--) {
+        if (number.charAt(index) != '0') {
+          digits++;
+        }
+      }
+      if (digits < 4) {
+        element.innerHTML = "Not enough non-zero digits!";
+        return;
+      }
+      var pointer = allocate(intArrayFromString(number), 'i8', ALLOC_NORMAL);
+      var result = UTF32ToString(_calculate(pointer, deapth));
+      _free(pointer);
+      if (result == "No solution found!") {
+        document.getElementById("increase").style.visibility = 'visible';
+      } else {
+        document.getElementById("increase").style.visibility = 'hidden';
+      }
+      element.innerHTML = result;
+    }
+  </script>
+</head>
+
+<body style="background-color:#e8eaf6;">
+  <div class="jumbotron text-center" style="background-color:#1a237e;">
+    <h1 style="color:white;">Three</h1>
+    <p style="color:white;">Type any number with four or more non-zero digits below.</p>
+  </div>
+  <div class="container">
+    <form onkeyup="update()">
+      <div class="form-group">
+        <label for="number">Number</label>
+        <input type="text" class="form-control" id="number" aria-describedby="number-help" placeholder="Enter number">
+        <small id="number-help" class="form-text text-muted">Any number with four or more non-zero digits.</small>
+      </div>
+    </form>
+    <div class="jumbotron text-center" style="background-color:#304ffe;padding:0;">
+      <h1 style="color:white;font-size:1vw;" id="result"></h1>
+    </div>
+    <form id="increase" style="visibility:hidden;">
+      <div class="form-row align-items-center">
+        <div class="col-sm-3 my-1">
+          <input type="text" class="form-control" id="deapth" deapth-describedby="deapth-help" placeholder="100000000000" value="100000000000">
+        </div>
+        <div class="col-auto my-1">
+          <button type="button" onclick="increaseDeapth()" class="btn btn-danger">Search</button>
+        </div>
+      </div>
+      <small id="deapth-help" class="form-text text-muted">Search deapth - This could take a long time.</small>
+    </form>
+  </div>
+</body>
+
+</html>
