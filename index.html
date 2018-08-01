@@ -23,6 +23,7 @@
     }
 
     function process(number, deapth) {
+      number = number.replace(/\D/g, '');
       var element = document.getElementById("result");
       var digits = 0;
       var index = number.length;
