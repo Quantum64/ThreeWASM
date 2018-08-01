@@ -37,7 +37,7 @@
       }
       var pointer = allocate(intArrayFromString(number), 'i8', ALLOC_NORMAL);
       var result = UTF32ToString(_calculate(pointer, deapth));
-      _free(pointer);
+      Module._free(pointer);
       if (result == "No solution found!") {
         document.getElementById("increase").style.visibility = 'visible';
       } else {
